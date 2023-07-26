@@ -1,4 +1,4 @@
-##Установите ansible версии 2.10 или выше.
+**Установите ansible версии 2.10 или выше.**
 
 ```
 vagrant@server1:~$ ansible --version
@@ -10,7 +10,7 @@ ansible 2.10.8
   python version = 3.10.6 (main, May 29 2023, 11:10:38) [GCC 11.3.0]
 ```
 
-##Попробуйте запустить playbook на окружении из test.yml, зафиксируйте какое значение имеет факт some_fact для указанного хоста при выполнении playbook'a.
+**Попробуйте запустить playbook на окружении из test.yml, зафиксируйте какое значение имеет факт some_fact для указанного хоста при выполнении playbook'a.**
 
 ```
 vagrant@server1:~/08-ansible-01-base/playbook$ ansible-playbook site.yml -i inventory/test.yml
@@ -34,15 +34,17 @@ PLAY RECAP *********************************************************************
 localhost                  : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
 
-##Найдите файл с переменными (group_vars) в котором задаётся найденное в первом пункте значение и поменяйте его на 'all default fact'.
+**Найдите файл с переменными (group_vars) в котором задаётся найденное в первом пункте значение и поменяйте его на 'all default fact'.**
 
 ```
 vagrant@server1:~/08-ansible-01-base/playbook$ cat group_vars/all/examp.yml
 ---
   some_fact: "all default fact"
+```
 
-Воспользуйтесь подготовленным (используется docker) или создайте собственное окружение для проведения дальнейших испытаний.
+**Воспользуйтесь подготовленным (используется docker) или создайте собственное окружение для проведения дальнейших испытаний.**
 
+```
 vagrant@server1:~$ docker run -it --rm -d --name centos7 -v $(pwd)/data:/data centos:7
 70a87dd50d93a1bf07b16f3ad63479c0459f47d7c1ce4104d6b0f0a2fab80d83
 vagrant@server1:~$ docker run -it --rm -d --name ubuntu -v $(pwd)/data:/data ubuntu:latest
@@ -53,7 +55,7 @@ CONTAINER ID   IMAGE           COMMAND       CREATED          STATUS          PO
 70a87dd50d93   centos:7        "/bin/bash"   26 seconds ago   Up 26 seconds             centos7
 ```
 
-##Проведите запуск playbook на окружении из prod.yml. Зафиксируйте полученные значения some_fact для каждого из managed host.
+**Проведите запуск playbook на окружении из prod.yml. Зафиксируйте полученные значения some_fact для каждого из managed host.**
 
 ```
 vagrant@server1:~/08-ansible-01-base/playbook$ ansible-playbook site.yml -i inventory/prod.yml
@@ -85,7 +87,7 @@ centos7                    : ok=3    changed=0    unreachable=0    failed=0    s
 ubuntu                     : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
 
-##Добавьте факты в group_vars каждой из групп хостов так, чтобы для some_fact получились следующие значения: для deb - 'deb default fact', для el - 'el default fact'.
+**Добавьте факты в group_vars каждой из групп хостов так, чтобы для some_fact получились следующие значения: для deb - 'deb default fact', для el - 'el default fact'.**
 
 ```
 vagrant@server1:~/08-ansible-01-base/playbook$ cat group_vars/{deb,el}/*
@@ -95,7 +97,7 @@ vagrant@server1:~/08-ansible-01-base/playbook$ cat group_vars/{deb,el}/*
   some_fact: "el default fact"
 ```
 
-##Повторите запуск playbook на окружении prod.yml. Убедитесь, что выдаются корректные значения для всех хостов.
+**Повторите запуск playbook на окружении prod.yml. Убедитесь, что выдаются корректные значения для всех хостов.**
 
 ```
 vagrant@server1:~/08-ansible-01-base/playbook$ ansible-playbook site.yml -i inventory/prod.yml
@@ -127,7 +129,7 @@ centos7                    : ok=3    changed=0    unreachable=0    failed=0    s
 ubuntu                     : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
 
-##При помощи ansible-vault зашифруйте факты в group_vars/deb и group_vars/el с паролем netology
+**При помощи ansible-vault зашифруйте факты в group_vars/deb и group_vars/el с паролем netology**
 
 ```
 vagrant@server1:~/08-ansible-01-base/playbook$ ansible-vault encrypt group_vars/deb/examp.yml
@@ -140,7 +142,7 @@ Confirm New Vault password:
 Encryption successful
 ```
 
-##Запустите playbook на окружении prod.yml. При запуске ansible должен запросить у вас пароль. Убедитесь в работоспособности
+**Запустите playbook на окружении prod.yml. При запуске ansible должен запросить у вас пароль. Убедитесь в работоспособности**
 
 ```
 vagrant@server1:~/08-ansible-01-base/playbook$ ansible-playbook site.yml -i inventory/prod.yml --ask-vault-pass
@@ -173,7 +175,7 @@ centos7                    : ok=3    changed=0    unreachable=0    failed=0    s
 ubuntu                     : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
 
-##Посмотрите при помощи ansible-doc список плагинов для подключения. Выберите подходящий для работы на control node.
+**Посмотрите при помощи ansible-doc список плагинов для подключения. Выберите подходящий для работы на control node.**
 
 ```
 vagrant@server1:~$ ansible-doc --type connection --list
@@ -223,7 +225,7 @@ AUTHOR: ansible (@core)
 VERSION_ADDED_COLLECTION: ansible.builtin
 ```
 
-##В prod.yml добавьте новую группу хостов с именем local, в ней разместите localhost с необходимым типом подключения.
+**В prod.yml добавьте новую группу хостов с именем local, в ней разместите localhost с необходимым типом подключения.**
 
 ```
 vagrant@server1:~/08-ansible-01-base/playbook$ cat inventory/prod.yml
@@ -242,7 +244,7 @@ vagrant@server1:~/08-ansible-01-base/playbook$ cat inventory/prod.yml
         ansible_connection: local
 ```
 
-##Запустите playbook на окружении prod.yml. При запуске ansible должен запросить у вас пароль. Убедитесь что факты some_fact для каждого из хостов определены из верных group_vars.
+**Запустите playbook на окружении prod.yml. При запуске ansible должен запросить у вас пароль. Убедитесь что факты some_fact для каждого из хостов определены из верных group_vars.**
 
 ```
 vagrant@server1:~/08-ansible-01-base/playbook$ ansible-playbook site.yml -i inventory/prod.yml --ask-vault-pass
@@ -283,4 +285,4 @@ localhost                  : ok=3    changed=0    unreachable=0    failed=0    s
 ubuntu                     : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
 
-##Заполните README.md ответами на вопросы. Сделайте git push в ветку master. В ответе отправьте ссылку на ваш открытый репозиторий с изменённым playbook и заполненным README.md.
+**Заполните README.md ответами на вопросы. Сделайте git push в ветку master. В ответе отправьте ссылку на ваш открытый репозиторий с изменённым playbook и заполненным README.md.**
